@@ -1,0 +1,142 @@
+##########################################################################
+# Title:         Sandbox: Ampache | Default Variables                  #
+# Author(s):     delegreg                                                   #
+# URL:           https://github.com/delegreg/Sandbox                     #
+# --                                                                     #
+##########################################################################
+#                   GNU General Public License v3.0                      #
+##########################################################################
+---
+################################
+# Basics
+################################
+
+ampache_name: ampache
+
+################################
+# Paths
+################################
+
+ampache_paths_folder: "{{ ampache_name }}"
+ampache_paths_location: "{{ server_appdata_path }}/{{ ampache_paths_folder }}"
+ampache_paths_folders_list:
+  - "{{ ampache_paths_location }}"
+ampache_paths_recursive: true
+
+################################
+# Web
+################################
+
+ampache_web_subdomain: "{{ ampache_name }}"
+ampache_web_domain: "{{ user.domain }}"
+ampache_web_port: "80"
+ampache_web_url: "{{ 'https://' + ampache_web_subdomain + '.' + ampache_web_domain }}"
+
+################################
+# DNS
+################################
+
+ampache_dns_record: "{{ ampache_web_subdomain }}"
+ampache_dns_zone: "{{ ampache_web_domain }}"
+ampache_dns_proxy: "{{ dns.proxied }}"
+
+################################
+# Traefik
+################################
+
+ampache_traefik_middleware: "{{ traefik_default_middleware }}"
+ampache_traefik_certresolver: "{{ traefik_default_certresolver }}"
+ampache_traefik_enabled: true
+
+################################
+# Docker
+################################
+
+# Container
+ampache_docker_container: "{{ ampache_name }}"
+
+# Image
+ampache_docker_image_pull: true
+ampache_docker_image_tag: "latest"
+ampache_docker_image: "ampache/ampache:{{ ampache_docker_image_tag }}"
+
+# Ports
+ampache_docker_ports_defaults: []
+ampache_docker_ports_custom: []
+ampache_docker_ports: "{{ ampache_docker_ports_defaults
+                            + ampache_docker_ports_custom }}"
+
+# Envs
+ampache_docker_envs_default:
+  TZ: "{{ tz }}"
+ampache_docker_envs_custom: {}
+ampache_docker_envs: "{{ ampache_docker_envs_default
+                           | combine(ampache_docker_envs_custom) }}"
+
+# Commands
+ampache_docker_commands_default: []
+ampache_docker_commands_custom: []
+ampache_docker_commands: "{{ ampache_docker_commands_default
+                               + ampache_docker_commands_custom }}"
+
+# Volumes
+ampache_docker_volumes_default:
+  - "{{ ampache_paths_location }}/config:/var/www/config"
+  - "{{ ampache_paths_location }}/log:/var/log/ampache"
+  - "{{ ampache_paths_location }}/mysql:/var/lib/mysql"
+  - "/mnt/unionfs/Media/Music:/media"
+ampache_docker_volumes_custom: []
+ampache_docker_volumes: "{{ ampache_docker_volumes_default
+                              + ampache_docker_volumes_custom }}"
+
+# Devices
+ampache_docker_devices_default: []
+ampache_docker_devices_custom: []
+ampache_docker_devices: "{{ ampache_docker_devices_default
+                              + ampache_docker_devices_custom }}"
+
+# Hosts
+ampache_docker_hosts_default: []
+ampache_docker_hosts_custom: []
+ampache_docker_hosts: "{{ docker_hosts_common
+                            | combine(ampache_docker_hosts_default)
+                            | combine(ampache_docker_hosts_custom) }}"
+
+# Labels
+ampache_docker_labels_default: {}
+ampache_docker_labels_custom: {}
+ampache_docker_labels: "{{ docker_labels_common
+                             | combine(ampache_docker_labels_default)
+                             | combine(ampache_docker_labels_custom) }}"
+
+# Hostname
+ampache_docker_hostname: "{{ ampache_name }}"
+
+# Networks
+ampache_docker_networks_alias: "{{ ampache_name }}"
+ampache_docker_networks_default: []
+ampache_docker_networks_custom: []
+ampache_docker_networks: "{{ docker_networks_common
+                               + ampache_docker_networks_default
+                               + ampache_docker_networks_custom }}"
+
+# Capabilities
+ampache_docker_capabilities_default: []
+ampache_docker_capabilities_custom: []
+ampache_docker_capabilities: "{{ ampache_docker_capabilities_default
+                                   + ampache_docker_capabilities_custom }}"
+
+# Security Opts
+ampache_docker_security_opts_default: []
+ampache_docker_security_opts_custom: []
+ampache_docker_security_opts: "{{ ampache_docker_security_opts_default
+                                    + ampache_docker_security_opts_custom }}"
+
+# Restart Policy
+ampache_docker_restart_policy: unless-stopped
+
+# State
+ampache_docker_state: started
+
+# User
+ampache_docker_user: "{{ uid }}:{{ gid }}"

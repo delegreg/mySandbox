@@ -23,6 +23,7 @@
     - { role: alltube, tags: ['alltube'] }
     - { role: alternatrr, tags: ['alternatrr'] }
     - { role: alternatrrx, tags: ['alternatrrx'] }
+    - { role: ampache, tags: ['ampache'] }
     - { role: apprise, tags: ['apprise'] }
     - { role: archivebox, tags: ['archivebox'] }
     - { role: aria2_ng, tags: ['aria2-ng'] }
